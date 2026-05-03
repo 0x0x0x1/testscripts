@@ -1,0 +1,34 @@
+local remotes = {}
+
+local function isRemote(obj)
+	return obj:IsA("RemoteEvent")
+		or obj:IsA("RemoteFunction")
+		or obj:IsA("UnreliableRemoteEvent")
+		or obj:IsA("UnreliableRemoteFunction")
+end
+
+task.wait(5)
+
+for _, obj in ipairs(game:GetDescendants()) do
+	if isRemote(obj) then
+		table.insert(remotes, obj)
+	end
+end
+
+table.sort(remotes, function(a, b)
+	return a:GetFullName() < b:GetFullName()
+end)
+
+print("\n--------------------")
+print("All Remotes")
+print("--------------------\n")
+
+for _, remote in ipairs(remotes) do
+	print(remote.ClassName .. " -> " .. remote:GetFullName())
+end
+
+print("\n--------------------")
+print("Total Count")
+print("--------------------\n")
+
+print("Total Remotes:", #remotes)
